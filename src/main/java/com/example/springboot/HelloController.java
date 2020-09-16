@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class HelloController {
@@ -30,4 +31,21 @@ public class HelloController {
 		return new ResponseEntity<String>(buf.toString(), HttpStatus.OK);
 	}
 
+	@GetMapping("/listAll")
+	public ResponseEntity<String> listAll(@RequestHeader Map<String, String> headers, @RequestParam Map<String,String> allParams) {
+		StringBuilder buf = new StringBuilder();
+		buf.append("All headers: <br>");
+		headers.forEach((key, value) -> {
+			buf.append(String.format("%s = %s<br>\n", key, value));
+			//LOG.info(String.format("Header '%s' = %s", key, value));
+		});
+
+		buf.append("==========");
+		buf.append("all request parameters: <br>");
+		allParams.forEach((key, value) -> {
+			buf.append(String.format("%s = %s<br>\n", key, value));
+		});
+		
+		return new ResponseEntity<String>(buf.toString(), HttpStatus.OK);
+	}
 }
